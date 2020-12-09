@@ -25,3 +25,4 @@ rebar.lock
 /.ci/redis/nodes.*.conf
 /.ci/redis/*.log
 /.idea/
+.DS_Store
