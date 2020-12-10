@@ -1,4 +1,4 @@
-version: '3'
+version: '2.4'
 
 services:
   erlang:
@@ -25,9 +25,11 @@ services:
 networks:
   app_net:
     driver: bridge
-    #enable_ipv6: true
+    enable_ipv6: true
     ipam:
       driver: default
       config:
         - subnet: 172.16.239.0/24
+          gateway: 172.16.239.1
         - subnet: 2001:3200:3200::/64
+          gateway: 2001:3200:3200::1

@@ -76,7 +76,7 @@ jobs:
               run: |
                 set -e -u -x
                 docker-compose -f ./.ci/docker-compose-cluster.yml -p tests up -d
-                sed -i '/auth.redis.type/c auth.redis.type = cluster
+                sed -i '/auth.redis.type/c auth.redis.type = cluster'
                 sed -i '/auth.redis.server/c auth.redis.server = 172.16.239.10:7000,172.16.239.10:7001,172.16.239.10:7002' ./etc/emqx_auth_redis.conf
             - name: setup
               if: matrix.connect_type == 'tcp' && matrix.network_type == 'ipv6' && matrix.node_type == 'cluster'
