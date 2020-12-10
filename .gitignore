@@ -22,5 +22,7 @@ erlang.mk
 .rebar3/
 *.swp
 rebar.lock
+/.ci/redis/nodes.*.conf
+/.ci/redis/*.log
 /.idea/
 .DS_Store

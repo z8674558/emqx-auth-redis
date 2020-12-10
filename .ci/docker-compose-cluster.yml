@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  erlang:
+    image: erlang:22.3
+    volumes:
+      - ../:/emqx_auth_redis
+    networks:
+      app_net:
+    depends_on:
+      - redis_cluster
+    tty: true
+
+  redis_cluster:
+    image: redis:${REDIS_TAG}
+    container_name: redis-cluster
+    volumes:
+      - ./redis/:/data/conf
+    command: bash -c "/bin/bash /data/conf/redis.sh && while true; do echo 1; sleep 1; done"
+    networks:
+      app_net:
+        ipv4_address: 172.16.239.10
+
+networks:
+  app_net:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.16.239.0/24
+          gateway: 172.16.239.1
