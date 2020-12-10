@@ -1,4 +1,4 @@
-version: '3'
+version: '2.3'
 
 services:
   erlang:
@@ -6,7 +6,7 @@ services:
     volumes:
       - ../:/emqx_auth_redis
     networks:
-      app_net:
+      - app_net
     depends_on:
       - redis_cluster
     tty: true
