@@ -78,8 +78,17 @@ jobs:
                 docker-compose -f ./.ci/docker-compose-cluster.yml -p tests up -d
                 sed -i '/auth.redis.type/c auth.redis.type = cluster
                 sed -i '/auth.redis.server/c auth.redis.server = 172.16.239.10:7000,172.16.239.10:7001,172.16.239.10:7002' ./etc/emqx_auth_redis.conf
+            - name: setup
+              if: matrix.connect_type == 'tcp' && matrix.network_type == 'ipv6' && matrix.node_type == 'cluster'
+              env:
+                REDIS_TAG: ${{ matrix.redis_tag }}
+              run: |
+                set -e -u -x
+                docker-compose -f ./.ci/docker-compose-cluster.yml -p tests up -d
+                sed -i '/auth.redis.type/c auth.redis.type = cluster
+                sed -i '/auth.redis.server/c auth.redis.server = 2001:3200:3200::20:7000,2001:3200:3200::20:7001,2001:3200:3200::20:7002' ./etc/emqx_auth_redis.conf
             - name: run test cases
-              if: matrix.connect_type == 'tcp' || (matrix.connect_type == 'tls' &&  matrix.redis_tag == '6.0.9')
+              if: matrix.connect_type == 'tcp' || (matrix.connect_type == 'tls' &&  matrix.redis_tag == '6.0.9' && matrix.node_type == 'single')
               run: |
                 docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_redis xref"
                 docker exec -i tests_erlang_1 sh -c "make -C /emqx_auth_redis eunit"

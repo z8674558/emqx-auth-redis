@@ -20,12 +20,16 @@ services:
     networks:
       app_net:
         ipv4_address: 172.16.239.10
+        ipv6_address: 2001:3200:3200::20
 
 networks:
   app_net:
     driver: bridge
+    enable_ipv6: true
     ipam:
       driver: default
       config:
         - subnet: 172.16.239.0/24
           gateway: 172.16.239.1
+        - subnet: 2001:3200:3200::/64
+          gateway: 2001:3200:3200::1
